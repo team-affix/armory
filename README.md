@@ -1,0 +1,2 @@
+# armory
+Local file encryption
