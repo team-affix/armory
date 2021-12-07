@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 #if _DEBUG
 
 	// FOR TESTING ONLY -------------------------------
-	std::string l_input_string = "arm aes decrypt -d 1638859030-data.txt.aes -k key.dat";
+	std::string l_input_string = "arm aes";
 	std::vector<std::string> l_input = affix_base::data::string_split(l_input_string, ' ');
 	argc = l_input.size();
 	std::vector<char*> l_input_converted;

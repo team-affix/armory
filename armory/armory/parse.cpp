@@ -2,7 +2,7 @@
 #include "affix-base/string_extensions.h"
 #include "process.h"
 #include "affix-base/ptr.h"
-#include "affix-base/ios.h"
+#include "affix-base/files.h"
 #include <exception>
 #include "affix-base/utc_time.h"
 
@@ -19,15 +19,17 @@ aes_generate_decl::aes_generate_decl(
 	l_app->callback(
 		[&] 
 		{ 
-			a_on_selected = true; 
+			a_on_selected = true;
+			post_process();
 		});
 	
-	CLI::Option* l_key_path_option = l_app->add_option("-k,--key_path", m_key_path, "The path where the AES key will be stored.");
-	CLI::Option* l_iv_path_option = l_app->add_option("-i,--iv_path", m_iv_path, "The path where the IV will be stored.");
+	CLI::Option_group* l_option_group = l_app->add_option_group("group_test", "");
+	CLI::Option* l_key_path_option = l_option_group->add_option("-k,--key_path", m_key_path, "The path where the AES key will be stored.");
+	CLI::Option* l_iv_path_option = l_option_group->add_option("-i,--iv_path", m_iv_path, "The path where the IV will be stored.");
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
-	l_app->require_option(1, 2);
+	l_option_group->require_option(1, 0);
 }
 
 void aes_generate_decl::post_process()
@@ -62,7 +64,7 @@ aes_encrypt_decl::aes_encrypt_decl(
 	CLI::Option* l_recursive_option = l_app->add_flag("-r,--recursive", m_recursive, "Set this flag to recursively encrypt all subfolders as well.");
 
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
 }
 
@@ -85,11 +87,11 @@ void aes_encrypt_decl::post_process()
 		throw std::exception("Data path is not a valid path.");
 	}
 
-	affix_base::ios::file_read(m_key_path.u8string(), m_key);
+	affix_base::files::file_read(m_key_path.u8string(), m_key);
 
 	if (l_use_iv)
 	{
-		affix_base::ios::file_read(m_iv_path.u8string(), m_iv);
+		affix_base::files::file_read(m_iv_path.u8string(), m_iv);
 	}
 
 }
@@ -119,7 +121,7 @@ aes_decrypt_decl::aes_decrypt_decl(
 	CLI::Option* l_recursive_option = l_app->add_flag("-r,--recursive", m_recursive, "Set this flag to recursively decrypt all subfolders as well.");
 
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
 }
 
@@ -142,11 +144,11 @@ void aes_decrypt_decl::post_process()
 		throw std::exception("Data path is not a valid path.");
 	}
 
-	affix_base::ios::file_read(m_key_path.u8string(), m_key);
+	affix_base::files::file_read(m_key_path.u8string(), m_key);
 
 	if (l_use_iv)
 	{
-		affix_base::ios::file_read(m_iv_path.u8string(), m_iv);
+		affix_base::files::file_read(m_iv_path.u8string(), m_iv);
 	}
 
 }
@@ -175,7 +177,7 @@ rsa_generate_decl::rsa_generate_decl(
 	l_key_size_option->required(true);
 
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
 }
 
@@ -202,7 +204,7 @@ rsa_encrypt_decl::rsa_encrypt_decl(
 	CLI::Option* l_recursive_option = l_app->add_flag("-r,--recursive", m_recursive, "Set this flag to recursively encrypt all subfolders as well.");
 
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
 }
 
@@ -246,7 +248,7 @@ rsa_decrypt_decl::rsa_decrypt_decl(
 	CLI::Option* l_recursive_option = l_app->add_flag("-r,--recursive", m_recursive, "Set this flag to recursively decrypt all subfolders as well.");
 
 	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
-	CLI::Option* l_include_timestamp_option = l_app->add_flag("--timestamp", m_include_timestamp, "Prepends a timestamp to the beginning of the outputted files' names.");
+	CLI::Option* l_avoid_conflicts_option = l_app->add_flag("-a,--avoid_conflicts", m_avoid_conflicts, "Appends a number to the end of the output file names to avoid file name conflicts.");
 
 }
 

@@ -12,7 +12,7 @@ namespace armory {
 		std::filesystem::path m_iv_path;
 		bool m_generate_key = false;
 		bool m_generate_iv = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 		bool m_truncate = false;
 
 	public:
@@ -32,7 +32,7 @@ namespace armory {
 		std::vector<uint8_t> m_iv;
 		std::filesystem::path m_data_path;
 		bool m_truncate = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 		bool m_recursive = false;
 
 	public:
@@ -54,7 +54,7 @@ namespace armory {
 		std::vector<uint8_t> m_iv;
 		std::filesystem::path m_data_path;
 		bool m_truncate = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 		bool m_recursive = false;
 
 	public:
@@ -76,7 +76,7 @@ namespace armory {
 		std::filesystem::path m_public_key_path;
 		uint16_t m_key_size = 0;
 		bool m_truncate = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 
 	public:
 		rsa_generate_decl(
@@ -91,7 +91,7 @@ namespace armory {
 		CryptoPP::RSA::PublicKey m_public_key;
 		std::filesystem::path m_data_path;
 		bool m_truncate = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 		bool m_recursive = false;
 
 	public:
@@ -111,7 +111,7 @@ namespace armory {
 		CryptoPP::RSA::PrivateKey m_private_key;
 		std::filesystem::path m_data_path;
 		bool m_truncate = false;
-		bool m_include_timestamp = false;
+		bool m_avoid_conflicts = false;
 		bool m_recursive = false;
 
 	public:

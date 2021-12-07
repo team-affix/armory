@@ -6,16 +6,16 @@
 #include <filesystem>
 #include "affix-base/string_extensions.h"
 #include "affix-base/timing.h"
+#include "affix-base/path_attributes.h"
 
 namespace fs = std::filesystem;
 
-void prepend_timestamp(
-	std::string& a_string
+void avoid_conflict(
+	std::string& a_path
 )
 {
-	a_string = std::to_string(affix_base::timing::utc_time()) + "-" + a_string;
+	a_path = affix_base::files::get_unoccupied_path(a_path);
 }
-
 
 void armory::process_aes_generate(
 	const aes_generate_decl& a_decl
@@ -26,8 +26,8 @@ void armory::process_aes_generate(
 		std::string l_output_path = a_decl.m_key_path.u8string();
 
 		// CONDITIONALLY INCLUDE TIMESTAMP
-		if (a_decl.m_include_timestamp)
-			prepend_timestamp(l_output_path);
+		if (a_decl.m_avoid_conflicts)
+			avoid_conflict(l_output_path);
 
 		bool l_key_path_valid = !fs::is_directory(l_output_path);
 		bool l_key_path_exists = fs::exists(l_output_path);
@@ -39,7 +39,7 @@ void armory::process_aes_generate(
 			throw std::exception("Key path already exists.");
 
 		std::vector<uint8_t> l_key = affix_base::cryptography::aes_generate_key();
-		affix_base::ios::file_write(l_output_path, l_key);
+		affix_base::files::file_write(l_output_path, l_key);
 
 	}
 
@@ -48,8 +48,8 @@ void armory::process_aes_generate(
 		std::string l_output_path = a_decl.m_iv_path.u8string();
 
 		// CONDITIONALLY INCLUDE TIMESTAMP
-		if (a_decl.m_include_timestamp)
-			prepend_timestamp(l_output_path);
+		if (a_decl.m_avoid_conflicts)
+			avoid_conflict(l_output_path);
 
 		bool l_iv_path_valid = !fs::is_directory(l_output_path);
 		bool l_iv_path_exists = fs::exists(l_output_path);
@@ -61,7 +61,7 @@ void armory::process_aes_generate(
 			throw std::exception("IV path already exists.");
 
 		std::vector<uint8_t> l_iv = affix_base::cryptography::aes_generate_iv();
-		affix_base::ios::file_write(l_output_path, l_iv);
+		affix_base::files::file_write(l_output_path, l_iv);
 
 	}
 
@@ -96,8 +96,8 @@ void armory::process_aes_encrypt(
 	l_output_path += ".aes";
 
 	// CONDITIONALLY INCLUDE TIMESTAMP
-	if (a_decl.m_include_timestamp)
-		prepend_timestamp(l_output_path);
+	if (a_decl.m_avoid_conflicts)
+		avoid_conflict(l_output_path);
 
 	// CHECK FOR TRUNCATION
 	if (fs::exists(l_output_path) && !a_decl.m_truncate)
@@ -147,8 +147,8 @@ void armory::process_aes_decrypt(
 	l_output_path.erase(l_output_path.end() - 4, l_output_path.end());
 
 	// CONDITIONALLY INCLUDE TIMESTAMP
-	if (a_decl.m_include_timestamp)
-		prepend_timestamp(l_output_path);
+	if (a_decl.m_avoid_conflicts)
+		avoid_conflict(l_output_path);
 
 	// CHECK FOR TRUNCATION
 	if (fs::exists(l_output_path) && !a_decl.m_truncate)
