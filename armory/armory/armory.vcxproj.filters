@@ -13,24 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\func_decls">
+      <UniqueIdentifier>{f864a9b2-41af-46f6-9d8e-8cee01c2360b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\func_decls">
+      <UniqueIdentifier>{3a011246-fd6f-4926-97eb-ad54e4637975}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="parse.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="func_decl_aes_generate.cpp">
+      <Filter>Source Files\func_decls</Filter>
     </ClCompile>
-    <ClCompile Include="process.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="func_decl_aes_transform.cpp">
+      <Filter>Source Files\func_decls</Filter>
+    </ClCompile>
+    <ClCompile Include="func_decl_rsa_generate.cpp">
+      <Filter>Source Files\func_decls</Filter>
+    </ClCompile>
+    <ClCompile Include="func_decl_rsa_transform.cpp">
+      <Filter>Source Files\func_decls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="process.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="func_decl_aes_generate.h">
+      <Filter>Header Files\func_decls</Filter>
     </ClInclude>
-    <ClInclude Include="parse.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="func_decl_aes_transform.h">
+      <Filter>Header Files\func_decls</Filter>
+    </ClInclude>
+    <ClInclude Include="func_decl_rsa_transform.h">
+      <Filter>Header Files\func_decls</Filter>
+    </ClInclude>
+    <ClInclude Include="func_decl_rsa_generate.h">
+      <Filter>Header Files\func_decls</Filter>
+    </ClInclude>
+    <ClInclude Include="func_decls.h">
+      <Filter>Header Files\func_decls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

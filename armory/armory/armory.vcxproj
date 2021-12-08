@@ -151,13 +151,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="func_decl_aes_transform.cpp" />
+    <ClCompile Include="func_decl_aes_generate.cpp" />
+    <ClCompile Include="func_decl_rsa_transform.cpp" />
+    <ClCompile Include="func_decl_rsa_generate.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="parse.cpp" />
-    <ClCompile Include="process.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="parse.h" />
-    <ClInclude Include="process.h" />
+    <ClInclude Include="func_decl_aes_transform.h" />
+    <ClInclude Include="func_decl_rsa_transform.h" />
+    <ClInclude Include="func_decl_rsa_generate.h" />
+    <ClInclude Include="func_decl_aes_generate.h" />
+    <ClInclude Include="func_decls.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\affix-base\affix-base\affix-base.vcxproj">
