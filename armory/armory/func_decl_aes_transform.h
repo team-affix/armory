@@ -24,7 +24,7 @@ namespace armory
 		void pre_execute();
 		void process_key_path();
 		void process_iv_path();
-		void process_data_path();
+		void process_input_path();
 
 	protected:
 		void execute() const;

@@ -48,7 +48,7 @@ void func_decl_aes_transform::pre_execute()
 	// CHECK PATHS
 	process_key_path();
 	process_iv_path();
-	process_data_path();
+	process_input_path();
 
 	// IMPORT KEY
 	affix_base::files::file_read(m_key_path.u8string(), m_key);
@@ -82,7 +82,7 @@ void func_decl_aes_transform::process_iv_path()
 	}
 }
 
-void func_decl_aes_transform::process_data_path()
+void func_decl_aes_transform::process_input_path()
 {
 	if (!fs::exists(m_input_path))
 	{

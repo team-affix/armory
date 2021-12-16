@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 #if _DEBUG
 
 	// FOR TESTING ONLY -------------------------------
-	std::string l_input_string = "arm aes transform -d --input output.txt --output input2.txt -k key.dat";
+	std::string l_input_string = "arm rsa transform -d -I output -O output2 -k private.dat";
 	std::vector<std::string> l_input = affix_base::data::string_split(l_input_string, ' ');
 	argc = l_input.size();
 	std::vector<char*> l_input_converted;
@@ -32,6 +32,8 @@ int main(int argc, char** argv)
 
 	armory::func_decl_aes_generate l_decl_aes_generate(l_aes_app);
 	armory::func_decl_aes_transform l_decl_aes_transform(l_aes_app);
+	armory::func_decl_rsa_generate l_decl_rsa_generate(l_rsa_app);
+	armory::func_decl_rsa_transform l_decl_rsa_transform(l_rsa_app);
 	
 	// PARSE ACTUAL DATA
 	try {

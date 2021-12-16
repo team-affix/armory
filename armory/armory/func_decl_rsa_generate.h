@@ -10,11 +10,14 @@ namespace armory
 	public:
 		std::filesystem::path m_private_key_path;
 		std::filesystem::path m_public_key_path;
-		uint16_t m_key_size = 0;
+		uint32_t m_key_size = 0;
 		bool m_truncate = false;
 
 	protected:
 		void pre_execute();
+		void process_private_key_path();
+		void process_public_key_path();
+		void process_key_size();
 
 	protected:
 		void execute() const;
