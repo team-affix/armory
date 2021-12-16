@@ -1,6 +1,8 @@
 #include "func_decl_rsa_generate.h"
+#include "affix-base/rsa.h"
 
 using namespace armory;
+namespace fs = std::filesystem;
 
 func_decl_rsa_generate::func_decl_rsa_generate(
 	CLI::App* a_rsa_app
@@ -18,13 +20,13 @@ func_decl_rsa_generate::func_decl_rsa_generate(
 		}
 	);
 
-	CLI::Option* l_private_key_path_option = l_app->add_option("--pr,--private_key_path", m_private_key_path, "The path where the RSA private key is to be stored.");
+	CLI::Option* l_private_key_path_option = l_app->add_option("--pr,--private", m_private_key_path, "The path where the RSA private key is to be stored.");
 	l_private_key_path_option->required(true);
 
-	CLI::Option* l_public_key_path_option = l_app->add_option("--pu,--public_key_path", m_public_key_path, "The path where the RSA public key is to be stored.");
+	CLI::Option* l_public_key_path_option = l_app->add_option("--pu,--public", m_public_key_path, "The path where the RSA public key is to be stored.");
 	l_public_key_path_option->required(true);
 
-	CLI::Option* l_key_size_option = l_app->add_option("-s,--key_size", m_key_size, "Size of RSA modulus in bits (2048, 4096, etc.).");
+	CLI::Option* l_key_size_option = l_app->add_option("-s,--key_size", m_key_size, "Size of RSA modulus in bits (1024, 2048, 4096, etc.).");
 	l_key_size_option->required(true);
 
 	CLI::Option* l_truncate_option = l_app->add_flag("--truncate", m_truncate, "Configures overwriting of files that share the output name.");
@@ -33,11 +35,57 @@ func_decl_rsa_generate::func_decl_rsa_generate(
 
 void func_decl_rsa_generate::pre_execute()
 {
+	process_private_key_path();
+	process_public_key_path();
+	process_key_size();
+}
 
+void func_decl_rsa_generate::process_private_key_path()
+{
+	if (fs::exists(m_private_key_path))
+	{
+		if (fs::is_directory(m_private_key_path))
+		{
+			throw std::exception("Private key path already exists as a directory.");
+		}
+		else if (!m_truncate)
+		{
+			throw std::exception("Private key path already occupied.");
+		}
+	}
+}
+
+void func_decl_rsa_generate::process_public_key_path()
+{
+	if (fs::exists(m_public_key_path))
+	{
+		if (fs::is_directory(m_public_key_path))
+		{
+			throw std::exception("Public key path already exists as a directory.");
+		}
+		else if (!m_truncate)
+		{
+			throw std::exception("Public key path already occupied.");
+		}
+	}
+}
+
+void func_decl_rsa_generate::process_key_size()
+{
+	if (m_key_size % 1024 != 0)
+	{
+		throw std::exception("Key size is not a multiple of 1024.");
+	}
 }
 
 void func_decl_rsa_generate::execute() const
 {
+	using namespace affix_base::cryptography;
+
+	rsa_key_pair l_key_pair = rsa_generate_key_pair(m_key_size);
+	
+	rsa_export(l_key_pair.private_key, m_private_key_path.u8string());
+	rsa_export(l_key_pair.public_key, m_public_key_path.u8string());
 
 }
 
