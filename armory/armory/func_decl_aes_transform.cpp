@@ -31,15 +31,15 @@ func_decl_aes_transform::func_decl_aes_transform(
 
 	CLI::Option* l_iv_path_option = l_app->add_option("-i,--iv", m_iv_path, "The path to the AES IV.");
 
-	CLI::Option* l_input_path_option = l_app->add_option("--input", m_input_path, "The path to the file (or folder) intending to be processed.");
+	CLI::Option* l_input_path_option = l_app->add_option("-I,--input", m_input_path, "The path to the file (or folder) intending to be processed.");
 	l_input_path_option->required(true);
 
-	CLI::Option* l_output_path_option = l_app->add_option("--output", m_output_path, "The intended output path. If recursion is enabled, appropriate subdirectories will be created if they do not already exist.");
+	CLI::Option* l_output_path_option = l_app->add_option("-O,--output", m_output_path, "The intended output path. If recursion is enabled, appropriate subdirectories will be created if they do not already exist.");
 	l_output_path_option->required(true);
 
-	CLI::Option* l_remote_original_file = l_app->add_flag("--delete", m_remove_input_files, "Deletes the input files after process is completed.");
-	CLI::Option* l_recursive_option = l_app->add_flag("--recursive", m_recursive, "Set this flag to recursively process all subfolders as well.");
-	CLI::Option* l_truncate_option = l_app->add_flag("--truncate", m_truncate, "Configures overwriting of files that share the output name.");
+	CLI::Option* l_remote_original_file = l_app->add_flag("--delete", m_delete_after, "Deletes the input files after process is completed.");
+	CLI::Option* l_recursive_option = l_app->add_flag("-r,--recursive", m_recursive, "Set this flag to recursively process all subfolders as well.");
+	CLI::Option* l_truncate_option = l_app->add_flag("-t,--truncate", m_truncate, "Configures overwriting of files that share the output name.");
 
 }
 
@@ -102,9 +102,18 @@ void func_decl_aes_transform::transform(
 ) const
 {
 	if (fs::is_directory(a_input_path))
+	{
 		transform_directory(a_input_path, a_output_path, a_is_root);
+	}
 	else
+	{
 		transform_file(a_input_path, a_output_path);
+	}
+
+	if (m_delete_after)
+		// DELETE FILE / DIRECTORY AFTERWARDS
+		fs::remove(a_input_path);
+
 }
 
 void func_decl_aes_transform::transform_directory(
@@ -161,7 +170,7 @@ void func_decl_aes_transform::transform_file(
 
 	std::ifstream l_ifs(a_input_path, std::ios::in | std::ios::binary);
 	std::ofstream l_ofs(a_output_path, std::ios::out | std::ios::binary | std::ios::trunc);
-
+	
 	if (!m_decrypt)
 		affix_base::cryptography::aes_encrypt(l_ifs, l_ofs, m_key, m_iv);
 	else

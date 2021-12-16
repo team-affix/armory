@@ -15,7 +15,7 @@ namespace armory
 		std::vector<uint8_t> m_key;
 		std::vector<uint8_t> m_iv;
 		bool m_decrypt = false;
-		bool m_remove_input_files = false;
+		bool m_delete_after = false;
 		bool m_recursive = false;
 		bool m_truncate = false;
 		bool m_use_iv = false;

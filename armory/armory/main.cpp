@@ -9,8 +9,18 @@ int main(int argc, char** argv)
 
 #if _DEBUG
 
+#if 1
 	// FOR TESTING ONLY -------------------------------
-	std::string l_input_string = "arm aes transform -d --input output.txt --output input2.txt -k key.dat";
+
+	for (int i = 0; i < argc; i++)
+	{
+		std::cout << argv[i] << std::endl;
+	}
+	return 0;
+
+#else
+
+	std::string l_input_string = "arm aes transform -e --input input --output encrypt -k key.dat --recursive";
 	std::vector<std::string> l_input = affix_base::data::string_split(l_input_string, ' ');
 	argc = l_input.size();
 	std::vector<char*> l_input_converted;
@@ -23,12 +33,14 @@ int main(int argc, char** argv)
 
 #endif
 
+#endif
+
 
 	CLI::App l_app("Armory: local file encryption.", "arm");
 	l_app.require_subcommand(1);
 
 	CLI::App* l_aes_app = l_app.add_subcommand("aes", "AES (Advanced Encryption Standard) symmetric cryptographic algorithms.");
-	CLI::App* l_rsa_app = l_app.add_subcommand("rsa", "RSA (Rivest Shamir Adleman) asymmetric cryptographic algorithms.");
+	CLI::App* l_rsa_app = l_app.add_subcommand("rsa", "[CURRENTLY NOT IMPLEMENTED] RSA (Rivest Shamir Adleman) asymmetric cryptographic algorithms.");
 
 	armory::func_decl_aes_generate l_decl_aes_generate(l_aes_app);
 	armory::func_decl_aes_transform l_decl_aes_transform(l_aes_app);

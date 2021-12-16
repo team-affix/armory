@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "affix-base", "..\affix-base
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cryptlib", "..\affix-base\cryptopp\cryptlib.vcxproj", "{C39F4B46-6E89-4074-902E-CA57073044D2}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "armory_setup", "armory_setup\armory_setup.vdproj", "{21230C63-7C26-4ED3-91E6-A1C582BD0251}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -97,6 +99,18 @@ Global
 		{C39F4B46-6E89-4074-902E-CA57073044D2}.Standalone Release|x64.Build.0 = Release|x64
 		{C39F4B46-6E89-4074-902E-CA57073044D2}.Standalone Release|x86.ActiveCfg = Release|Win32
 		{C39F4B46-6E89-4074-902E-CA57073044D2}.Standalone Release|x86.Build.0 = Release|Win32
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Debug|x64.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Debug|x86.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.DLL-Import Debug|x64.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.DLL-Import Debug|x86.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.DLL-Import Release|x64.ActiveCfg = Release
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.DLL-Import Release|x86.ActiveCfg = Release
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Release|x64.ActiveCfg = Release
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Release|x86.ActiveCfg = Release
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Standalone Debug|x64.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Standalone Debug|x86.ActiveCfg = Debug
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Standalone Release|x64.ActiveCfg = Release
+		{21230C63-7C26-4ED3-91E6-A1C582BD0251}.Standalone Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
