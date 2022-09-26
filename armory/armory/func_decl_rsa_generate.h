@@ -14,16 +14,7 @@ namespace armory
 		bool m_truncate = false;
 
 	protected:
-		void pre_execute();
-		void process_private_key_path();
-		void process_public_key_path();
-		void process_key_size();
-
-	protected:
-		void execute() const;
-
-	protected:
-		void post_execute();
+		void execute();
 
 	public:
 		func_decl_rsa_generate(

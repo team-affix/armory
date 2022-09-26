@@ -14,9 +14,7 @@ func_decl_aes_transform::func_decl_aes_transform(
 	l_app->callback(
 		[&]
 		{
-			pre_execute();
 			execute();
-			post_execute();
 		}
 	);
 
@@ -43,56 +41,37 @@ func_decl_aes_transform::func_decl_aes_transform(
 
 }
 
-void func_decl_aes_transform::pre_execute()
+void func_decl_aes_transform::execute()
 {
-	// CHECK PATHS
-	process_key_path();
-	process_iv_path();
-	process_input_path();
+	// Check key path
+	if (!fs::exists(m_key_path) || fs::is_directory(m_key_path))
+	{
+		throw std::exception("Key path is not a valid path.");
+	}
+
+	// Check IV path
+	if (m_iv_path != "" && !fs::exists(m_iv_path) || fs::is_directory(m_iv_path))
+	{
+		throw std::exception("IV path is not a valid path.");
+	}
+
+	// Check input path
+	if (!fs::exists(m_input_path))
+	{
+		throw std::exception("Data path is not a valid path.");
+	}
 
 	// IMPORT KEY
 	affix_base::files::file_read(m_key_path.u8string(), m_key);
 
-	if (m_use_iv)
+	if (m_iv_path != "")
 	{
 		// IMPORT IV
 		affix_base::files::file_read(m_iv_path.u8string(), m_iv);
 	}
 
-}
-
-void func_decl_aes_transform::process_key_path()
-{
-	if (!fs::exists(m_key_path) || fs::is_directory(m_key_path))
-	{
-		throw std::exception("Key path is not a valid path.");
-	}
-}
-
-void func_decl_aes_transform::process_iv_path()
-{
-	m_use_iv = m_iv_path.u8string() != "";
-
-	if (!m_use_iv)
-		return;
-
-	if (!fs::exists(m_iv_path) || fs::is_directory(m_iv_path))
-	{
-		throw std::exception("IV path is not a valid path.");
-	}
-}
-
-void func_decl_aes_transform::process_input_path()
-{
-	if (!fs::exists(m_input_path))
-	{
-		throw std::exception("Data path is not a valid path.");
-	}
-}
-
-void func_decl_aes_transform::execute() const
-{
 	transform(m_input_path, m_output_path, true);
+
 }
 
 void func_decl_aes_transform::transform(
@@ -175,10 +154,5 @@ void func_decl_aes_transform::transform_file(
 		affix_base::cryptography::aes_encrypt(l_ifs, l_ofs, m_key, m_iv);
 	else
 		affix_base::cryptography::aes_decrypt(l_ifs, l_ofs, m_key, m_iv);
-
-}
-
-void func_decl_aes_transform::post_execute()
-{
 
 }

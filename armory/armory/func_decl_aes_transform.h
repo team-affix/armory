@@ -12,22 +12,17 @@ namespace armory
 		std::filesystem::path m_iv_path;
 		std::filesystem::path m_input_path;
 		std::filesystem::path m_output_path;
-		std::vector<uint8_t> m_key;
-		std::vector<uint8_t> m_iv;
 		bool m_decrypt = false;
 		bool m_delete_after = false;
 		bool m_recursive = false;
 		bool m_truncate = false;
-		bool m_use_iv = false;
 
 	protected:
-		void pre_execute();
-		void process_key_path();
-		void process_iv_path();
-		void process_input_path();
+		std::vector<uint8_t> m_key;
+		std::vector<uint8_t> m_iv;
 
 	protected:
-		void execute() const;
+		void execute();
 		void transform(
 			const std::filesystem::path& a_input_path,
 			const std::filesystem::path& a_output_path,
@@ -42,9 +37,6 @@ namespace armory
 			const std::filesystem::path& a_input_path,
 			const std::filesystem::path& a_output_path
 		) const;
-
-	protected:
-		void post_execute();
 
 	public:
 		func_decl_aes_transform(

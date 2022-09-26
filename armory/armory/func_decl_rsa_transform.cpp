@@ -15,9 +15,7 @@ func_decl_rsa_transform::func_decl_rsa_transform(
 	l_app->callback(
 		[&] 
 		{
-			pre_execute();
 			execute();
-			post_execute();
 		});
 
 	CLI::Option_group* l_transform_option = l_app->add_option_group("transform_options", "Available transformations.");
@@ -41,20 +39,15 @@ func_decl_rsa_transform::func_decl_rsa_transform(
 
 }
 
-void func_decl_rsa_transform::pre_execute()
+void func_decl_rsa_transform::execute()
 {
-	process_key_path();
-	process_input_path();
-
-}
-
-void func_decl_rsa_transform::process_key_path()
-{
+	// Check key path
 	if (!fs::exists(m_key_path) || fs::is_directory(m_key_path))
 	{
 		throw std::exception("Key path does not point to a file.");
 	}
 
+	// Try to import RSA key
 	if (!m_decrypt)
 	{
 		if (!rsa_try_import(m_public_key, m_key_path.u8string()))
@@ -70,19 +63,14 @@ void func_decl_rsa_transform::process_key_path()
 		}
 	}
 
-}
-
-void func_decl_rsa_transform::process_input_path()
-{
-	if (!fs::exists(m_key_path))
+	// Check input path
+	if (!fs::exists(m_input_path))
 	{
 		throw std::exception("Input path invalid.");
 	}
-}
 
-void func_decl_rsa_transform::execute() const
-{
 	transform(m_input_path, m_output_path, true);
+
 }
 
 void func_decl_rsa_transform::transform(
@@ -154,10 +142,5 @@ void func_decl_rsa_transform::transform_file(
 		affix_base::cryptography::rsa_encrypt(l_ifs, l_ofs, m_public_key);
 	else
 		affix_base::cryptography::rsa_decrypt(l_ifs, l_ofs, m_private_key);
-
-}
-
-void func_decl_rsa_transform::post_execute()
-{
 
 }

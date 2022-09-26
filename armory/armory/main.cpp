@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
 #else
 
-	std::string l_input_string = "arm rsa transform -e --input input --output encrypt -k key.dat --recursive";
+	std::string l_input_string = "arm aes transform --help";
 	std::vector<std::string> l_input = affix_base::data::string_split(l_input_string, ' ');
 	argc = l_input.size();
 	std::vector<char*> l_input_converted;

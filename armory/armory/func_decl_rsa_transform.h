@@ -11,20 +11,17 @@ namespace armory
 		std::filesystem::path m_key_path;
 		std::filesystem::path m_input_path;
 		std::filesystem::path m_output_path;
-		CryptoPP::RSA::PublicKey m_public_key;
-		CryptoPP::RSA::PrivateKey m_private_key;
 		bool m_decrypt = false;
 		bool m_remove_input_files = false;
 		bool m_recursive = false;
 		bool m_truncate = false;
 
 	protected:
-		void pre_execute();
-		void process_key_path();
-		void process_input_path();
+		CryptoPP::RSA::PublicKey m_public_key;
+		CryptoPP::RSA::PrivateKey m_private_key;
 
 	protected:
-		void execute() const;
+		void execute();
 		void transform(
 			const std::filesystem::path& a_input_path,
 			const std::filesystem::path& a_output_path,
@@ -39,9 +36,6 @@ namespace armory
 			const std::filesystem::path& a_input_path,
 			const std::filesystem::path& a_output_path
 		) const;
-
-	protected:
-		void post_execute();
 
 	public:
 		func_decl_rsa_transform(

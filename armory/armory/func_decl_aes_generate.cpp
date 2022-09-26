@@ -15,9 +15,7 @@ func_decl_aes_generate::func_decl_aes_generate(
 	l_app->callback(
 		[&]
 		{
-			pre_execute();
 			execute();
-			post_execute();
 		}
 	);
 
@@ -31,54 +29,28 @@ func_decl_aes_generate::func_decl_aes_generate(
 
 }
 
-void func_decl_aes_generate::pre_execute()
+void func_decl_aes_generate::execute()
 {
-	process_key_path();
-	process_iv_path();
-
-}
-
-void func_decl_aes_generate::process_key_path()
-{
-	m_generate_key = m_key_path != "";
-
-	if (!m_generate_key)
-		return;
-
+	// Check key path data
 	bool l_key_path_valid = !fs::is_directory(m_key_path);
 	bool l_key_path_exists = fs::exists(m_key_path);
-	
 	if (!l_key_path_valid)
 		throw std::exception("Invalid key path.");
-
 	if (l_key_path_exists && !m_truncate)
 		throw std::exception("Key path already exists.");
 
-}
-
-void func_decl_aes_generate::process_iv_path()
-{
-	m_generate_iv = m_iv_path != "";
-
-	if (!m_generate_iv)
-		return;
-
+	// Check IV path data
 	bool l_iv_path_valid = !fs::is_directory(m_iv_path);
 	bool l_iv_path_exists = fs::exists(m_iv_path);
-
 	if (!l_iv_path_valid)
 		throw std::exception("Invalid iv path.");
-
 	if (l_iv_path_exists && !m_truncate)
 		throw std::exception("IV path already exists.");
 
-}
-
-void func_decl_aes_generate::execute() const
-{
-	if (m_generate_key)
+	// Generate key / IV / both
+	if (m_key_path != "")
 		generate_key();
-	if (m_generate_iv)
+	if (m_iv_path != "")
 		generate_iv();
 
 }
@@ -93,9 +65,4 @@ void func_decl_aes_generate::generate_iv() const
 {
 	std::vector<uint8_t> l_iv = affix_base::cryptography::aes_generate_iv();
 	affix_base::files::file_write(m_iv_path.u8string(), l_iv);
-}
-
-void func_decl_aes_generate::post_execute()
-{
-
 }

@@ -14,9 +14,7 @@ func_decl_rsa_generate::func_decl_rsa_generate(
 	l_app->callback(
 		[&]
 		{
-			pre_execute();
 			execute();
-			post_execute();
 		}
 	);
 
@@ -33,15 +31,11 @@ func_decl_rsa_generate::func_decl_rsa_generate(
 
 }
 
-void func_decl_rsa_generate::pre_execute()
+void func_decl_rsa_generate::execute()
 {
-	process_private_key_path();
-	process_public_key_path();
-	process_key_size();
-}
+	using namespace affix_base::cryptography;
 
-void func_decl_rsa_generate::process_private_key_path()
-{
+	// Check private key path
 	if (fs::exists(m_private_key_path))
 	{
 		if (fs::is_directory(m_private_key_path))
@@ -53,10 +47,8 @@ void func_decl_rsa_generate::process_private_key_path()
 			throw std::exception("Private key path already occupied.");
 		}
 	}
-}
 
-void func_decl_rsa_generate::process_public_key_path()
-{
+	// Check public key path
 	if (fs::exists(m_public_key_path))
 	{
 		if (fs::is_directory(m_public_key_path))
@@ -68,28 +60,16 @@ void func_decl_rsa_generate::process_public_key_path()
 			throw std::exception("Public key path already occupied.");
 		}
 	}
-}
 
-void func_decl_rsa_generate::process_key_size()
-{
+	// Check key size
 	if (m_key_size % 1024 != 0)
 	{
 		throw std::exception("Key size is not a multiple of 1024.");
 	}
-}
-
-void func_decl_rsa_generate::execute() const
-{
-	using namespace affix_base::cryptography;
 
 	rsa_key_pair l_key_pair = rsa_generate_key_pair(m_key_size);
 	
 	rsa_export(l_key_pair.private_key, m_private_key_path.u8string());
 	rsa_export(l_key_pair.public_key, m_public_key_path.u8string());
-
-}
-
-void func_decl_rsa_generate::post_execute()
-{
 
 }
